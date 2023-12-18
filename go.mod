@@ -1,4 +1,4 @@
-module fyne-gallery
+module inxo.ru/fyne-gallery
 
 go 1.21
 
