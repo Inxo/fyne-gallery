@@ -6,6 +6,7 @@ import (
 	"fyne.io/fyne/v2/canvas"
 	"fyne.io/fyne/v2/container"
 	"fyne.io/fyne/v2/layout"
+	"fyne.io/fyne/v2/widget"
 )
 
 //	type ClickableImage struct {
@@ -35,17 +36,14 @@ func main() {
 	// Add images to the grid
 	for _, path := range imagePaths {
 		image := canvas.NewImageFromFile(path)
-		//image.Resize(fyne.NewSize(10, 10))
-		//image := canvas.NewImageFromFileWithPainter(path, &clickableImage{path: path})
 		image.FillMode = canvas.ImageFillContain
 		image.SetMinSize(fyne.NewSize(0, imageHeight))
 
-		// Handle click events on the image
-		//image.OnTapped = func(_ *fyne.PointEvent) {
-		//	showImageInSameWindow(myWindow, path)
-		//}
-
-		gridLayout.Add(image)
+		openButton := widget.NewButton("", func() {
+			showImageInSameWindow(myWindow, path)
+		})
+		box := container.NewPadded(openButton, image)
+		gridLayout.Add(box)
 	}
 
 	// Wrap the grid in a scroller for scrolling functionality
@@ -57,10 +55,9 @@ func main() {
 }
 
 // Function to display the clicked image in the same window
-func showImageInSameWindow(window fyne.Window, imagePath string) {
-	image := canvas.NewImageFromFile(imagePath)
-	image.FillMode = canvas.ImageFillContain
-
+func showImageInSameWindow(window fyne.Window, path string) {
+	image := canvas.NewImageFromFile(path)
 	content := container.New(layout.NewCenterLayout(), image)
+	image.FillMode = canvas.ImageFillContain
 	window.SetContent(content)
 }
