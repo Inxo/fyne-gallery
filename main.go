@@ -40,7 +40,7 @@ func main() {
 		image.SetMinSize(fyne.NewSize(0, imageHeight))
 
 		openButton := widget.NewButton("", func() {
-			showImageInSameWindow(myWindow, path)
+			showImageInSameWindow(myWindow, path, gridLayout)
 		})
 		box := container.NewPadded(openButton, image)
 		gridLayout.Add(box)
@@ -55,9 +55,15 @@ func main() {
 }
 
 // Function to display the clicked image in the same window
-func showImageInSameWindow(window fyne.Window, path string) {
+func showImageInSameWindow(window fyne.Window, path string, gridLayout *fyne.Container) {
 	image := canvas.NewImageFromFile(path)
-	content := container.New(layout.NewCenterLayout(), image)
 	image.FillMode = canvas.ImageFillContain
+	closeButton := widget.NewButton("close", func() {
+		scrollContainer := container.NewScroll(gridLayout)
+		window.SetContent(scrollContainer)
+		window.Show()
+	})
+	content := container.New(layout.NewPaddedLayout(), closeButton, image)
 	window.SetContent(content)
+	window.Show()
 }
