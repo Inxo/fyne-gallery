@@ -9,14 +9,7 @@ import (
 	"fyne.io/fyne/v2/widget"
 )
 
-//	type ClickableImage struct {
-//		Path string
-//	}
-//
-//	func (c *ClickableImage) Tapped(_ *fyne.PointEvent) {
-//		showImageInSameWindow(c.Path)
-//	}
-const imageHeight = 300
+const imageHeight = 200
 
 func main() {
 	myApp := app.New()
@@ -37,6 +30,7 @@ func main() {
 	for _, path := range imagePaths {
 		image := canvas.NewImageFromFile(path)
 		image.FillMode = canvas.ImageFillContain
+		image.ScaleMode = canvas.ImageScaleFastest
 		image.SetMinSize(fyne.NewSize(0, imageHeight))
 
 		openButton := widget.NewButton("", func() {
