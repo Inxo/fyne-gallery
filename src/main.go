@@ -7,6 +7,7 @@ import (
 	"fyne.io/fyne/v2/container"
 	"fyne.io/fyne/v2/layout"
 	"fyne.io/fyne/v2/widget"
+	"strconv"
 )
 
 const imageHeight = 200
@@ -27,16 +28,16 @@ func main() {
 	gridLayout := container.New(layout.NewGridLayout(3))
 
 	// Add images to the grid
-	for _, path := range imagePaths {
+	for i, path := range imagePaths {
+		p := path
 		image := canvas.NewImageFromFile(path)
 		image.FillMode = canvas.ImageFillContain
 		image.ScaleMode = canvas.ImageScaleFastest
 		image.SetMinSize(fyne.NewSize(0, imageHeight))
-
-		openButton := widget.NewButton("", func() {
-			showImageInSameWindow(myWindow, path, gridLayout)
-		})
-		box := container.NewPadded(openButton, image)
+		openImage := func() {
+			showImageInSameWindow(myWindow, p, gridLayout)
+		}
+		box := container.NewPadded(widget.NewButton(strconv.Itoa(i), openImage), image)
 		gridLayout.Add(box)
 	}
 
@@ -59,5 +60,4 @@ func showImageInSameWindow(window fyne.Window, path string, gridLayout *fyne.Con
 	})
 	content := container.New(layout.NewPaddedLayout(), closeButton, image)
 	window.SetContent(content)
-	window.Show()
 }
